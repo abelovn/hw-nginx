@@ -4,19 +4,22 @@
 Homework
 
 Objective:
-deploy 4 virtualizations with terraform in yandex cloud
-1 virtualization - Nginx - with public IP address
-2 virtualizers - backend of student's choice (any application from github - uwsgi/unicorn/php-fpm/java) + nginx with statics
-1 virtualization with database of student's choice mysql/mongodb/postgres/redis.
+ - deploy 4 virtualizations with terraform in yandex cloud
+ - 1 virtualization - Nginx - with public IP address
+ - 2 virtualizers - backend of student's choice (any application from github - uwsgi/unicorn/php-fpm/java) + nginx with statics
+ - 1 virtualization with database of student's choice mysql/mongodb/postgres/redis.
+
+
+The solution for the backend is taken from here
+
+https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
+
+
 repository in github: README, schema, terraform and ensemble manifests
 the stand should be deployed with terraform and ansible
 the system should continue to work when the backend virtualization fails (shuts down).
 
-Description/Step-by-step instructions for the homework assignment:
-Required:
 
-implement terraform to deploy one virtualization to yandex-cloud
-rewire nginx using ansible
 
 
 
@@ -73,6 +76,5 @@ For example
 
 
 Nginx (with Wordpress) will be available at ip address from nginx_public_ip_address.
-
 
 
