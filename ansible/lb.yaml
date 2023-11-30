@@ -1,0 +1,45 @@
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+    use: "systemd"
+
+- name: Install Packages
+  ansible.builtin.apt: 
+    name: "{{ lb_packages }}"
+    state: latest
+    update_cache: true
+
+- name: Configure nginx for proxy to apps
+  ansible.builtin.template:
+    src: "lb.conf.j2"
+    dest: "/etc/nginx/conf.d/lb.conf"
+    owner: www-data
+    group: www-data
+  notify: nginx reload
+
+- name: Remove default config
+  ansible.builtin.file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: nginx reload
+
+- name: Set extended logging
+  ansible.builtin.blockinfile:
+    path: "/etc/nginx/nginx.conf"
+    insertbefore: ".*access_log"
+    block: |
+      #
+              log_format extended '$remote_addr - $remote_user [$time_local] '
+                    '"$request" $status $body_bytes_sent '
+                    '"$http_referer" "$http_user_agent" '
+                    'host=$host request_time=$request_time request_length=$request_length '
+                    'upstream_addr=$upstream_addr upstream_response_time=$upstream_response_time '
+                    'upstream_status=$upstream_status realip_remote_addr=$realip_remote_addr';
+  notify: nginx reload
+
+- name: Set logging for access_log
+  ansible.builtin.lineinfile:
+    path: "/etc/nginx/nginx.conf"
+    search_string: "access_log"
+    line: "        access_log /var/log/nginx/access.log extended;"
+  notify: nginx reload
