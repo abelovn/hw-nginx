@@ -60,3 +60,19 @@ go to the ansible directory and run the playbook: ansible-playbook setup.yaml
 
 
 
+PS
+
+If there is no module for Ansible installed, install it
+
+
+For example
+```
+ ansible-galaxy collection install community.mysql
+```
+
+
+
+Nginx (with Wordpress) will be available at ip address from nginx_public_ip_address.
+
+
+
