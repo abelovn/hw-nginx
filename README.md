@@ -48,7 +48,14 @@ ssh-keygen
 To deploy this project run
 
 ```bash
-  git clone https://github.com/abelovn/hw-nginx.git && cd hw-nginx && terraform init && terraform plan && terraform apply  -auto-approve
+  git clone https://github.com/abelovn/hw-nginx.git && cd  hw-nginx/terraform/ && terraform init && terraform plan && terraform apply  -auto-approve
+```
+after terraform deploy
+
+go to the ansible directory and run the playbook: ansible-playbook setup.yaml
+
+```
+  ansible-playbook setup.yaml
 ```
 
 
