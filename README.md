@@ -77,4 +77,4 @@ For example
 
 Nginx (with Wordpress) will be available at ip address from nginx_public_ip_address.
 
-
+[[https://github.com/abelovn/hw-nginx/blob/main/scheme.png|alt=scheme]]
