@@ -1,0 +1,50 @@
+---
+- name: Install and configure Loadbalancer, Apps and Database
+  hosts: all
+  become: true
+
+  vars:
+    db_packages:
+    - mariadb-server
+    - python3-pip
+    lb_packages:
+    - nginx
+    app_packages:
+    - nginx
+    - php-fpm
+    - php-mysql
+    - unzip
+    wp_db_name: "wordpress"
+    wp_db_user: "wordpress"
+    wp_db_pass: "wordpresspassword"
+    wp_db_host: "{{ hostvars['db0'].ansible_host }}"
+
+
+  tasks:
+  - name: Install and configure Database
+    include_tasks: "db.yaml"
+    when: inventory_hostname in groups["db"]
+
+  - name: Install and configure Apps
+    include_tasks: "app.yaml"
+    when: inventory_hostname in groups["app"]
+
+  - name: Install and configure Loadbalancer
+    include_tasks: "lb.yaml"
+    when: inventory_hostname in groups["lb"]
+
+  handlers:
+  - name: restart php-fpm
+    ansible.builtin.systemd:
+      name: "php8.1-fpm.service"
+      state: restarted
+  
+  - name: nginx reload
+    ansible.builtin.systemd:
+      name: "nginx"
+      state: reloaded
+
+  - name: restart mariadb-server
+    ansible.builtin.systemd:
+      name: "mariadb.service"
+      state: restarted
